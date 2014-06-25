@@ -51,6 +51,13 @@
               ,   mailto:     ""
               ,   company:    "CableLabs Inc"
               ,   companyURL: "http://www.cablelabs.com/"
+              },
+              {
+                  name:       "Alexander Adolf"
+              ,   url:        ""
+              ,   mailto:     ""
+              ,   company:    "Condition-ALPHA"
+              ,   companyURL: "http://www.condition-alpha.com/"
               }
           ],
 
@@ -279,16 +286,10 @@
               </tr>
             </thead>
             <tr>
-              <th>generic or unknown</th>
-              <td>not supported</td>
-              <td>the 'stream_type' is </td>
-              <td>the 'stream_type' is </td>
-            </tr>
-            <tr>
               <th>ATSC</th>
               <td>
                 <ul>
-                  <li>The elementary stream with PID 0x02 or the 'stream_type' value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
+                  <li>The elementary stream with PID 0x02 or the 'stream_type' value is "0x02", "0x05", or between "0x80" and "0xFF". </li>
                   <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with a 'stream_type' of "0x02".</li>
                 </ul>
               </td>
@@ -297,9 +298,24 @@
             </tr>
             <tr>
               <th>DVB</th>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>
+                <ul>
+                  <li>a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+
+                  <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                  <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_data_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                </ul>
+              </td>
+              <td>the 'stream_type' is "0x01", "0x02", "0x1B", "0x20", "0x24", or "0xEA"</td>
+              <td>
+                <ul>
+                  <li>the 'stream_type' is "0x03", "0x04", or "0x11"</li>
+                  <li>an AC-3 audio component as identified by an 'AC-3_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                  <li>an Enhanced AC-3 audio component as identified by an 'enhanced_ac-3_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                  <li>a DTS&reg; audio component as identified by a 'DTS_audio_stream_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                  <li>a DTS-HD&reg; audio component as identified by a 'DTS-HD_audio_stream_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                </ul>
+              </td>
             </tr>
             <tr>
               <th>ISDB</th>
