@@ -298,9 +298,8 @@
              <td>
                <ul>
                  <li>a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-
                  <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-                 <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_data_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                 <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_data_descriptor' [[DVB-SI]] or a 'VBI_teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
               </ul>
             </td>
             <td>the 'stream_type' is "0x01", "0x02", "0x1B", "0x20", "0x24", or "0xEA"</td>
@@ -357,13 +356,28 @@
                 <li>"metadata": otherwise</li>
               </ul>
             </td>
-            <td></td>
+            <td>
+              <ul>
+                <li>"captions":
+                  <ul>
+                    <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
+                    <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" or "0x04" in the PMT</li>
+                    <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" or "0x04" in the PMT</li>
+                  </ul>
+                </li>
+                <li>"metadata": otherwise</li>
+            </td>
             <td></td>
           </tr>
           <tr>
             <th>label</th>
             <td>The empty string.</td>
-            <td></td>
+            <td>
+              <ul>
+                <li>if a 'component_descriptor' [[DVB-SI]] for the component is present in the SDT or EIT, the content of the text field in that 'component_descriptor'</li>
+                <li>otherwise the empty string</li>
+              </ul>
+            </td>
             <td></td>
           </tr>
           <tr>
@@ -375,184 +389,195 @@
                 <li>"metadata": The empty string.</li>
               </ul>
             </td>
-            <td></td>
+            <td>@kind is
+              <ul>
+                <li>"captions":
+                  <ul>
+                    <li>for a DVB subtitle component [[DVB-SUB]], the value of the 'ISO_639_language_code' field in the 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
+                    <li>for an ITU-R System B Teletext component [[DVB-TXT]], the value of the 'ISO_639_language_code' field in the 'teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                    <li>for a VBI data component [[DVB-VBI]], the value of the 'ISO_639_language_code' field in the 'VBI_teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                  </ul>
+                </li>
+                <li>"metadata": The empty string.</li>
+              </ul>
+            </td>
             <td></td>
           </tr>
         </table>
       </section>
 
       <section id="mpeg2ts-attributes-for-av-tracks">
-         <h3>Track Attributes for sourced Audio and Video Tracks</h3>
-           <table>
-           <thead>
-             <tr>
-               <th rowspan="2">Attribute</th>
-               <th colspan="3">How to source its value</th>
-             </tr>
-             <tr>
-               <th>ATSC Transport Stream</th>
-               <th>DVB Transport Stream</th>
-               <th>ISDB Transport Stream</th>
-             </tr>
-           </thead>
-           <tr>
-             <th>id</th>
-             <td>
-                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
-             </td>
-             <td></td>
-             <td></td>
-           </tr>
-           <tr>
-             <th>kind</th>
-             <td>
-               <ul>
-                 <li>"alternative": not used</li>
-                 <li>"captions": not used</li>
-                 <li>"descriptions": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
-                 <li>"main": first audio (video) elementary stream in the PMT</li>
-                 <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
-                 <li>"sign": not used</li>
-                 <li>"subtitles": not used</li>
-                 <li>"translation": not first audio elementary stream in the PMT and bsmod=0</li>
-                 <li>"commentary": not used</li>
-                 <li>"": otherwise</li>
-               </ul>
-             </td>
-             <td></td>
-             <td></td>
-           </tr>
-           <tr>
-             <th>label</th>
-             <td>
-               The empty string.
-             </td>
-             <td></td>
-             <td></td>
-           </tr>
-           <tr>
-             <th>language</th>
-             <td>
-               Content of the 'ISO_639_language_descriptor' field.
-             </td>
-             <td></td>
-             <td></td>
-           </tr>
-         </table>
+        <h3>Track Attributes for sourced Audio and Video Tracks</h3>
+          <table>
+          <thead>
+            <tr>
+              <th rowspan="2">Attribute</th>
+              <th colspan="3">How to source its value</th>
+            </tr>
+            <tr>
+              <th>ATSC Transport Stream</th>
+              <th>DVB Transport Stream</th>
+              <th>ISDB Transport Stream</th>
+            </tr>
+          </thead>
+          <tr>
+            <th>id</th>
+            <td>
+               Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>kind</th>
+            <td>
+              <ul>
+                <li>"alternative": not used</li>
+                <li>"captions": not used</li>
+                <li>"descriptions": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
+                <li>"main": first audio (video) elementary stream in the PMT</li>
+                <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
+                <li>"sign": not used</li>
+                <li>"subtitles": not used</li>
+                <li>"translation": not first audio elementary stream in the PMT and bsmod=0</li>
+                <li>"commentary": not used</li>
+                <li>"": otherwise</li>
+              </ul>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>label</th>
+            <td>
+              The empty string.
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>language</th>
+            <td>
+              Content of the 'ISO_639_language_descriptor' field.
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
       </section>
 
       <section id="mpeg2ts-mapping-text-track-content-into-cues">
         <h3>Mapping text track content into text track cues</h3>
         <p>MPEG-2 transport streams may contain data that should be exposed as cues on 'captions', 'subtitles' or 'metadata' text tracks. No data is defined that equates to 'descriptions' or 'chapters' text track cues.</p>
 
-          <section>
-            <h4>Metadata cues</h4>
-            <p>Cues on an MPEG-2 metadata text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:</p>
-            <table>
-              <thead>
-                <tr>
-                  <th rowspan="2">Attribute</th>
-                  <th colspan="3">How to source its value</th>
-                </tr>
-                <tr>
-                  <th>ATSC Transport Stream</th>
-                  <th>DVB Transport Stream</th>
-                  <th>ISDB Transport Stream</th>
-                </tr>
-              </thead>
+        <section>
+          <h4>Metadata cues</h4>
+          <p>Cues on an MPEG-2 metadata text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:</p>
+          <table>
+            <thead>
               <tr>
-                <th>id</th>
-                <td>
-                  Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-                </td>
-                <td></td>
-                <td></td>
+                <th rowspan="2">Attribute</th>
+                <th colspan="3">How to source its value</th>
               </tr>
               <tr>
-                <th>startTime</th>
-                <td>0</td>
-                <td></td>
-                <td></td>
+                <th>ATSC Transport Stream</th>
+                <th>DVB Transport Stream</th>
+                <th>ISDB Transport Stream</th>
               </tr>
-              <tr>
-                <th>endTime</th>
-                <td>
-                  The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>pauseOnExit</th>
-                <td>"false"</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>data</th>
-                <td>
-                  The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-            </table>
-          </section>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>startTime</th>
+              <td>0</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>endTime</th>
+              <td>
+                The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>pauseOnExit</th>
+              <td>"false"</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>data</th>
+              <td>
+                The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </section>
 
-          <section>
-            <h4>Captions cues</h4>
-            <p>Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]]. MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object with TexTrackCue attributes sourced as follows:</p>
-            <table>
-              <thead>
-                <tr>
-                  <th rowspan="2">Attribute</th>
-                  <th colspan="3">How to source its value</th>
-                </tr>
-                <tr>
-                  <th>ATSC Transport Stream</th>
-                  <th>DVB Transport Stream</th>
-                  <th>ISDB Transport Stream</th>
-                </tr>
-              </thead>
+        <section>
+          <h4>Captions cues</h4>
+          <p>Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]]. MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object with TexTrackCue attributes sourced as follows:</p>
+          <table>
+            <thead>
               <tr>
-                <th>id</th>
-                <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
-                <td></td>
-                <td></td>
+                <th rowspan="2">Attribute</th>
+                <th colspan="3">How to source its value</th>
               </tr>
               <tr>
-                <th>startTime</th>
-                <td>
-                  The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
-                </td>
-                <td></td>
-                <td></td>
+                <th>ATSC Transport Stream</th>
+                <th>DVB Transport Stream</th>
+                <th>ISDB Transport Stream</th>
               </tr>
-              <tr>
-                <th>endTime</th>
-                <td>
-                  The sum of the startTime and 4 seconds.
-                  <p class='note'>
-                    CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
-                  </p>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>pauseOnExit</th>
-                <td>"false"</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <th>data</th>
-                <td>The 'service_block'.</td>
-                <td></td>
-                <td></td>
-              </tr>
-            </table>
-          </section>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>startTime</th>
+              <td>
+                The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>endTime</th>
+              <td>
+                The sum of the startTime and 4 seconds.
+                <p class='note'>
+                  CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
+                </p>
+              </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>pauseOnExit</th>
+              <td>"false"</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th>data</th>
+              <td>The 'service_block'.</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+        </section>
 
         <section>
           <h4>Subtitles cues</h4>
