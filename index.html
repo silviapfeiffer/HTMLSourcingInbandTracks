@@ -256,30 +256,73 @@
       <ol>
         <li>Track Order
           <p>
-            Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS) [[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
+            Tracks are called "elementary streams" in an MPEG-2 Transport Stream (TS) [[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
           </p>
+          <p class='note'>In DVB systems the order in which things are listed in tables is explicitly not significant. For Transport Streams originating from DVB systems, applications should hence not infer any information from the ordering, or rely on any particular ordering being present.</p>
         </li>
 
         <li>Determining the type of track
           <p>
-            A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
+            Based on the origin of an MPEG-2 TS, a user agent can recognise, and support data from an MPEG-2 TS resource as being equivalent to an HTML track. Depending on whether a given MPEG-2 TS is known to be originating from either an ATSC, DVB, or ISDB system, information to assist the user agent in classifying and describing each track is available in the MPEG-2 TS at various levels as descried below.
           </p>
-          <ul>
-            <li>text track:
-              <ul>
-                <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
-                <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02.</li>
-              </ul>
-            <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
-            <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
-          </ul>
+          
+          <table>
+            <thead>
+              <tr>
+                <th rowspan="2">TS originating from system</th>
+                <th colspan="3">How to recognize</th>
+              </tr>
+              <tr>
+                <th>a text track</th>
+                <th>a video track</th>
+                <th>an audio track</th>
+              </tr>
+            </thead>
+            <tr>
+              <th>generic or unknown</th>
+              <td>not supported</td>
+              <td>the stream type is in the range 0xE0 to 0xEF</td>
+              <td>the stream type is in the range 0xC0 to 0xDF</td>
+            </tr>
+            <tr>
+              <th>ATSC</th>
+              <td>
+                <ul>
+                  <li>The elementary stream with PID 0x02 or the stream type value is 0x02, 0x05 or between 0x80 and 0xFF. </li>
+                  <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02.</li>
+                </ul>
+              </td>
+              <td>the stream type value is 0x01, 0x02, 0x10, 0x1B, or between 0x1E and 0x23</td>
+              <td>the stream type value is 0x03, 0x04, 0x0F, 0x11, or 0x1C</td>
+            </tr>
+            <tr>
+              <th>DVB</th>
+              <td></td>
+              <td>same as for generic MPEG-2 TS</td>
+              <td>same as for generic MPEG-2 TS</td>
+            </tr>
+            <tr>
+              <th>ISDB</th>
+              <td></td>
+              <td>same as for generic MPEG-2 TS</td>
+              <td>same as for generic MPEG-2 TS</td>
+            </tr>
+          </table>
+          
         </li>
 
         <li>Track Attributes for sourced Text Tracks
           <table>
             <thead>
-              <th>Attribute</th>
-              <th>How to source its value</th>
+              <tr>
+                <th rowspan="2">Attribute</th>
+                <th colspan="3">How to source its value</th>
+              </tr>
+              <tr>
+                <th>ATSC Transport Stream</th>
+                <th>DVB Transport Stream</th>
+                <th>ISDB Transport Stream</th>
+              </tr>
             </thead>
             <tr>
               <th>id</th>
@@ -289,6 +332,8 @@
                 In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
               </p>
               </td>
+              <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
+              <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
             </tr>
             <tr>
               <th>kind</th>
@@ -299,12 +344,14 @@
                   <li>"metadata": otherwise</li>
                 </ul>
               </td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>label</th>
-              <td>
-                The empty string.
-              </td>
+              <td>The empty string.</td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>language</th>
@@ -315,6 +362,8 @@
                   <li>"metadata": The empty string.</li>
                 </ul>
               </td>
+              <td></td>
+              <td></td>
             </tr>
           </table>
         </li>
@@ -322,14 +371,23 @@
         <li>Track Attributes for sourced Audio and Video Tracks
           <table>
             <thead>
-              <th>Attribute</th>
-              <th>How to source its value</th>
+              <tr>
+                <th rowspan="2">Attribute</th>
+                <th colspan="3">How to source its value</th>
+              </tr>
+              <tr>
+                <th>ATSC Transport Stream</th>
+                <th>DVB Transport Stream</th>
+                <th>ISDB Transport Stream</th>
+              </tr>
             </thead>
             <tr>
               <th>id</th>
               <td>
                 Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
               </td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>kind</th>
@@ -347,18 +405,24 @@
                   <li>"": otherwise</li>
                 </ul>
               </td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>label</th>
               <td>
                 The empty string.
               </td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>language</th>
               <td>
                 Content of the 'ISO_639_language_descriptor' field.
               </td>
+              <td></td>
+              <td></td>
             </tr>
           </table>
         </li>
@@ -374,34 +438,51 @@
               </p>
               <table>
                 <thead>
-                  <th>Attribute</th>
-                  <th>How to source its value</th>
+                  <tr>
+                    <th rowspan="2">Attribute</th>
+                    <th colspan="3">How to source its value</th>
+                  </tr>
+                  <tr>
+                    <th>ATSC Transport Stream</th>
+                    <th>DVB Transport Stream</th>
+                    <th>ISDB Transport Stream</th>
+                  </tr>
                 </thead>
                 <tr>
                   <th>id</th>
                   <td>
                     Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>startTime</th>
                   <td>0</td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>endTime</th>
                   <td>
                     The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>pauseOnExit</th>
                   <td>"false"</td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>data</th>
                   <td>
                     The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </table>
             </li>
@@ -412,18 +493,29 @@
               </p>
               <table>
                 <thead>
-                  <th>Attribute</th>
-                  <th>How to source its value</th>
+                  <tr>
+                    <th rowspan="2">Attribute</th>
+                    <th colspan="3">How to source its value</th>
+                  </tr>
+                  <tr>
+                    <th>ATSC Transport Stream</th>
+                    <th>DVB Transport Stream</th>
+                    <th>ISDB Transport Stream</th>
+                  </tr>
                 </thead>
                 <tr>
                   <th>id</th>
                   <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>startTime</th>
                   <td>
                     The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>endTime</th>
@@ -433,14 +525,20 @@
                       CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
                     </p>
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>pauseOnExit</th>
                   <td>"false"</td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>data</th>
                   <td>The 'service_block'.</td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </table>
             </li>
@@ -451,36 +549,53 @@
               </p>
               <table>
                 <thead>
-                  <th>Attribute</th>
-                  <th>How to source its value</th>
+                  <tr>
+                    <th rowspan="2">Attribute</th>
+                    <th colspan="3">How to source its value</th>
+                  </tr>
+                  <tr>
+                    <th>ATSC Transport Stream</th>
+                    <th>DVB Transport Stream</th>
+                    <th>ISDB Transport Stream</th>
+                  </tr>
                 </thead>
                 <tr>
                   <th>id</th>
                   <td>
                     Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>startTime</th>
                   <td>
                     The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>endTime</th>
                   <td>
                     The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>pauseOnExit</th>
                   <td>"false"</td>
+                  <td></td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>data</th>
                   <td>
                     The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
                   </td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </table>
             </li>
