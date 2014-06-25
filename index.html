@@ -263,7 +263,7 @@
 
         <li>Determining the type of track
           <p>
-            Based on the origin of an MPEG-2 TS, a user agent can recognise, and support data from an MPEG-2 TS resource as being equivalent to an HTML track. Depending on whether a given MPEG-2 TS is known to be originating from either an ATSC, DVB, or ISDB system, information to assist the user agent in classifying and describing each track is available in the MPEG-2 TS at various levels as descried below.
+            Based on the origin of an MPEG-2 TS, the user agent can recognise, and support data from an MPEG-2 TS resource as being equivalent to an HTML track. Depending on whether a given MPEG-2 TS is known to be originating from either an ATSC, DVB, or ISDB system, information to assist the user agent in classifying and describing each track is available in the Program Map Table (PMT) of the MPEG-2 TS as descried below.
           </p>
           
           <table>
@@ -281,31 +281,31 @@
             <tr>
               <th>generic or unknown</th>
               <td>not supported</td>
-              <td>the stream type is in the range 0xE0 to 0xEF</td>
-              <td>the stream type is in the range 0xC0 to 0xDF</td>
+              <td>the 'stream_type' is </td>
+              <td>the 'stream_type' is </td>
             </tr>
             <tr>
               <th>ATSC</th>
               <td>
                 <ul>
-                  <li>The elementary stream with PID 0x02 or the stream type value is 0x02, 0x05 or between 0x80 and 0xFF. </li>
-                  <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02.</li>
+                  <li>The elementary stream with PID 0x02 or the 'stream_type' value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
+                  <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with a 'stream_type' of "0x02".</li>
                 </ul>
               </td>
-              <td>the stream type value is 0x01, 0x02, 0x10, 0x1B, or between 0x1E and 0x23</td>
-              <td>the stream type value is 0x03, 0x04, 0x0F, 0x11, or 0x1C</td>
+              <td>the 'stream_type' value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23""</td>
+              <td>the 'stream_type' value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</td>
             </tr>
             <tr>
               <th>DVB</th>
               <td></td>
-              <td>same as for generic MPEG-2 TS</td>
-              <td>same as for generic MPEG-2 TS</td>
+              <td></td>
+              <td></td>
             </tr>
             <tr>
               <th>ISDB</th>
               <td></td>
-              <td>same as for generic MPEG-2 TS</td>
-              <td>same as for generic MPEG-2 TS</td>
+              <td></td>
+              <td></td>
             </tr>
           </table>
           
@@ -340,7 +340,7 @@
               <td>
                 <ul>
                   <li>"captions": for a <a href="#captionservice">caption service</a></li>
-                  <li>"subtitles": if the stream type value is "0x82"</li>
+                  <li>"subtitles": if the 'stream_type' value is "0x82"</li>
                   <li>"metadata": otherwise</li>
                 </ul>
               </td>
