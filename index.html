@@ -78,7 +78,55 @@
           wgPatentURI:  "",
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
 
-      };
+          // local references
+          localBiblio: {
+              "ATSC": {
+                  title:    "Advanced Television Systems Committe",
+                  href:     "http://www.atsc.org/",
+              },
+              "DVB": {
+                  title:    "Digital Video Broadcasting Project",
+                  href:     "https://www.dvb.org/",
+              },
+              "DVB-SI": {
+                  title:    "ETSI EN 300 468: \"Digital Video Broadcasting (DVB); Specification for Service Information (SI) in DVB systems\"",
+                  href:     "http://www.etsi.org/deliver/etsi_en/300400_300499/300468/01.14.01_60/en_300468v011401p.pdf",
+                  publisher:  "European Telecommunications Standards Insitute",
+                  deliveredBy: [
+                      "https://www.dvb.org/"
+                  ]
+              },
+              "DVB-SUB": {
+                  title:    "ETSI EN 300 743: \"Digital Video Broadcasting (DVB); Subtitling systems\"",
+                  href:     "http://www.etsi.org/deliver/etsi_en/300700_300799/300743/01.05.01_60/en_300743v010501p.pdf",
+                  publisher:  "European Telecommunications Standards Insitute",
+                  deliveredBy: [
+                      "https://www.dvb.org/"
+                  ]
+              },
+              "DVB-TXT": {
+                  title:    "ETSI EN 300 472: \"Digital Video Broadcasting (DVB); Specification for conveying ITU-R System B Teletext in DVB bitstreams\"",
+                  href:     "http://www.etsi.org/deliver/etsi_en/300400_300499/300472/01.03.01_60/en_300472v010301p.pdf",
+                  publisher:  "European Telecommunications Standards Insitute",
+                  deliveredBy: [
+                      "https://www.dvb.org/"
+                  ]
+              },
+              "DVB-VBI": {
+                  title:    "ETSI EN 301 775: \"\"Digital Video Broadcasting (DVB); Specification for the carriage of Vertical Blanking Information (VBI) data in DVB bitstreams",
+                  href:     "http://www.etsi.org/deliver/etsi_en/301700_301799/301775/01.02.01_60/en_301775v010201p.pdf",
+                  publisher:  "European Telecommunications Standards Insitute",
+                  deliveredBy: [
+                      "https://www.dvb.org/"
+                  ]
+              },
+              "ISDB": {
+                  title:    "Integrated Services Digital Broadcasting",
+                  href:     "http://dibeg.org/",
+              }
+          }
+
+};
     </script>
     <style type="text/css">
       table {
@@ -263,19 +311,19 @@
       <section id="mpeg2ts-determining-the-system-type">
         <h3>Determining the System Type</h3>
         <p>MPEG-2 Transport Stream (TS) [[MPEG2TS]] is used as the transport layer in many multimedia broadcast systems worldwide, such as ATSC [[ATSC]], DVB [[DVB]], and ISDB [[ISDB]]. These systems define extensions to MPEG-2 TS to implement advanced features. To successfully map from such broadcast media containers to media resource tracks in HTML, the user agent needs to know from which type of broadcast system the MPEG-2 TS originates, in order to correctly interpret any extensions and make the advanced features available.</p>
-        <p>One source of information about the system type can be the Transport Stream Description Table (TSDT) [[MPEG2TS]]. If present in the MPEG-2 TS, it may convey a 'transport_stream_descriptor' [[DVB-SI]] from which the user agent infers the type of broadcast system.</p>
+        <p>One source of information about the system type can be the "Transport Stream Description Table" (TSDT) [[MPEG2TS]]. If present in the MPEG-2 TS, it may convey a 'transport_stream_descriptor' [[DVB-SI]] from which the user agent infers the type of broadcast system.</p>
         <p>If no TSDT is contained in the MPEG-2 TS, or it is not conveying a 'transport_stream_descriptor', the user agent employs other heuristics to determine the system type:</p>
         <ul>
           <li>If the user agent only implements a single broadcast standard, and it can find and and process all expected elements in the MPEG-2 TS, the TS is deemed to be originating from the respective system.</li>
           <li>If location information is available, the user agent can use its geographical location to infer the type of broadcast system in use.
-            <p class="note">For information on where ATSC systems are used, see the <a href="#TARGET_NEEDED">ATSC Worldwide page</a>. For information on where DVB systems are used, see the <a href="https://www.dvb.org/news/worldwide">DVB Worldwide page</a>. For information on where ISDB systems are used, see the <a href="http://www.dibeg.org">DiBEG page</a>.</p>
+            <p class="note">For information on where ATSC systems are used, see the <a href="#TARGET_NEEDED">ATSC Worldwide page</a>.<br> For information on where DVB systems are used, see the <a href="https://www.dvb.org/news/worldwide">DVB Worldwide page</a>.<br> For information on where ISDB systems are used, see the <a href="http://www.dibeg.org">DiBEG page</a>.</p>
           </li>
         </ul>
       </section>
       
       <section id="mpeg2ts-track-order">
         <h3>Track Order</h3>
-        <p>Tracks are called "elementary streams" in an MPEG-2 Transport Stream. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.</p>
+        <p>Tracks are called "elementary streams" in an MPEG-2 TS. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.</p>
         <p class='note'>In DVB systems the order in which things are listed in tables is explicitly not significant. For Transport Streams originating from DVB systems, user agents and scripts should hence not infer any information from the ordering, or rely on any particular ordering being present.</p>
       </section>
 
@@ -435,10 +483,8 @@
           </thead>
           <tr>
             <th>id</th>
-            <td>
-               Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
-            </td>
-            <td></td>
+            <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
+            <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
             <td></td>
           </tr>
           <tr>
@@ -457,7 +503,25 @@
                 <li>"": otherwise</li>
               </ul>
             </td>
-            <td></td>
+            <td>
+              <ul>
+                <li>"alternative": not used</li>
+                <li>"captions": not used</li>
+                <li>"descriptions":
+                  <ul>
+                    <li>for audio components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where the 'stream_content' is "0x3" and the 'component_type' is "0x40", "0x41", "0x42", "0x47" or "0x48"</li>
+                    <li>for audio components with a matching 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT</li>
+                  </ul>
+                </li>
+                <li>"main": not used</li>
+                <li>"main-desc": for audio components with a matching 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT</li>
+                <li>"sign": for video components with a 'component_descriptor' in the SDT or EIT, where the 'stream_content' is "0x2" and the 'component_type' is "0x30" or "0x31"</li>
+                <li>"subtitles": not used</li>
+                <li>"translation": for alternate language audio components</li>
+                <li>"commentary": not used</li>
+                <li>"": otherwise</li>
+              </ul>
+            </td>
             <td></td>
           </tr>
           <tr>
@@ -465,15 +529,18 @@
             <td>
               The empty string.
             </td>
-            <td></td>
+            <td>
+              <ul>
+                <li>if a 'component_descriptor' [[DVB-SI]] for the component is present in the SDT or EIT, the content of the text field in that 'component_descriptor'</li>
+                <li>otherwise the empty string</li>
+              </ul>
+            </td>
             <td></td>
           </tr>
           <tr>
             <th>language</th>
-            <td>
-              Content of the 'ISO_639_language_descriptor' field.
-            </td>
-            <td></td>
+            <td>Content of the 'ISO_639_language_descriptor' field.</td>
+            <td>Content of the 'ISO_639_language_descriptor' field.</td>
             <td></td>
           </tr>
         </table>
