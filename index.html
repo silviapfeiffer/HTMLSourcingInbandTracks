@@ -690,6 +690,7 @@
 
           <section>
             <h5>Captions cues originating from DVB Transport Streams</h5>
+            <p>In DVB systems, MPEG-2 captions data is either in the DVB Subtitles format [[DVB-SUB]], or in the EBU Teletext format [[DVB-TXT]][[DVB-VBI]]. Both formats use the Packetized Elementary Stream (PES) transport format [[MPEG2TS]]. Each 'PES_packet' creates a DataCue object.</p>
           </section>
 
           <section>
@@ -699,7 +700,7 @@
 
         <section>
           <h4>Subtitles cues</h4>
-          <p>Cues on an MPEG-2 subtitles text track are created as DataCue objects [[HTML5]]. MPEG-2 subtitle data is in the SCTE 27 format [[SCTE27]]. Each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TexTrackCue attributes sourced as follows:</p>
+          <p>Cues on an MPEG-2 subtitles text track are created as DataCue objects [[HTML5]] with TexTrackCue attributes sourced as follows:</p>
           <table>
             <thead>
               <tr>
@@ -715,19 +716,26 @@
             <tr>
               <th>id</th>
               <td>Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.</td>
-              <td></td>
+              <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
               <td></td>
             </tr>
             <tr>
               <th>startTime</th>
               <td>The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.</td>
-              <td></td>
+              <td>The time, in the media resource timeline, that corresponds to:
+                <ul>
+                  <li>if the media resource is carried in Packetized Elementary Stream (PES) [[MPEG2TS]], and the PES header conveys a Presentation Time Stamp (PTS) [[MPEG2TS]], the presentation time stamp of the PES frame</li>
+                  <li>otherwise, the presentation time stamp of the video frame received immediately prior to the data chunk in the media resource</li>
+                </ul>
+              </td>
               <td></td>
             </tr>
             <tr>
               <th>endTime</th>
               <td>The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.</td>
-              <td></td>
+              <td>the end time of applicability of the data if provided in the data format or the container, otherwise positive infinity
+                <p class="note">For data with no explicit end time, a renderer derives the end time from subsequent data.</p>
+              </td>
               <td></td>
             </tr>
             <tr>
@@ -746,10 +754,12 @@
 
           <section>
             <h5>Subtitles cues originating from ATSC Transport Streams</h5>
+            <p>In ATSC systems, MPEG-2 subtitle data is in the SCTE 27 format [[SCTE27]]. Each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object.</p>
           </section>
 
           <section>
             <h5>Subtitles cues originating from DVB Transport Streams</h5>
+            <p>In DVB systems, MPEG-2 subtitles data is either in the DVB Subtitles format [[DVB-SUB]], or in the EBU Teletext format [[DVB-TXT]][[DVB-VBI]]. Both formats use the Packetized Elementary Stream (PES) transport format [[MPEG2TS]]. Each 'PES_packet' creates a DataCue object.</p>
           </section>
 
           <section>
