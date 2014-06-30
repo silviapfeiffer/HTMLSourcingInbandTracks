@@ -430,9 +430,16 @@
               <ul>
                 <li>"captions":
                   <ul>
-                    <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
-                    <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" or "0x04" in the PMT</li>
-                    <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" or "0x04" in the PMT</li>
+                    <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x20" to "0x25"</li>
+                    <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT</li>
+                    <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT</li>
+                  </ul>
+                </li>
+                <li>"subtitles":
+                  <ul>
+                    <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x10" to "0x15"</li>
+                    <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT</li>
+                    <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT</li>
                   </ul>
                 </li>
                 <li>"metadata": otherwise</li>
@@ -461,7 +468,7 @@
             </td>
             <td>@kind is
               <ul>
-                <li>"captions":
+                <li>"captions" or "subtitles":
                   <ul>
                     <li>for a DVB subtitle component [[DVB-SUB]], the value of the 'ISO_639_language_code' field in the 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
                     <li>for an ITU-R System B Teletext component [[DVB-TXT]], the value of the 'ISO_639_language_code' field in the 'teletext_descriptor' [[DVB-SI]] in the PMT</li>
@@ -576,38 +583,40 @@
             </thead>
             <tr>
               <th>id</th>
-              <td>
-                Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-              </td>
-              <td></td>
+              <td>Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.</td>
+              <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
               <td></td>
             </tr>
             <tr>
               <th>startTime</th>
               <td>0</td>
-              <td></td>
+              <td>The time, in the media resource timeline, that corresponds to:
+                <ul>
+                  <li>if the media resource is carried in Packetized Elementary Stream (PES) [[MPEG2TS]], and the PES header conveys a Presentation Time Stamp (PTS) [[MPEG2TS]], the presentation time stamp of the PES frame</li>
+                  <li>if no PTS is available for the media resource itself, but a related video resource is available, then the presentation time stamp of the video frame received immediately prior to the data chunk in the media resource</li>
+                  <li> otherwise, 0</li>
+                </ul>
+              </td>
               <td></td>
             </tr>
             <tr>
               <th>endTime</th>
-              <td>
-                The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
+              <td>The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.</td>
+              <td>the end time of applicability of the data if provided in the data format or the container, otherwise positive infinity
+                <p class="note">For data with no explicit end time, a renderer derives the end time from subsequent data.</p>
               </td>
-              <td></td>
               <td></td>
             </tr>
             <tr>
               <th>pauseOnExit</th>
               <td>"false"</td>
-              <td></td>
+              <td>"false"</td>
               <td></td>
             </tr>
             <tr>
               <th>data</th>
-              <td>
-                The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-              </td>
-              <td></td>
+              <td>The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.</td>
+              <td>The payload data of the container received in the MPEG-2 TS.</td>
               <td></td>
             </tr>
           </table>
@@ -615,7 +624,7 @@
 
         <section>
           <h4>Captions cues</h4>
-          <p>Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]]. MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object with TexTrackCue attributes sourced as follows:</p>
+          <p>Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]], with TextTrackCue attributes sourced as follows:</p>
           <table>
             <thead>
               <tr>
@@ -631,7 +640,7 @@
             <tr>
               <th>id</th>
               <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
-              <td></td>
+              <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
               <td></td>
             </tr>
             <tr>
@@ -639,7 +648,12 @@
               <td>
                 The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
               </td>
-              <td></td>
+              <td>The time, in the media resource timeline, that corresponds to:
+                <ul>
+                  <li>if the media resource is carried in Packetized Elementary Stream (PES) [[MPEG2TS]], and the PES header conveys a Presentation Time Stamp (PTS) [[MPEG2TS]], the presentation time stamp of the PES frame</li>
+                  <li>otherwise, the presentation time stamp of the video frame received immediately prior to the data chunk in the media resource</li>
+                </ul>
+              </td>
               <td></td>
             </tr>
             <tr>
@@ -650,22 +664,37 @@
                   CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
                 </p>
               </td>
-              <td></td>
+              <td>the end time of applicability of the data if provided in the data format or the container, otherwise positive infinity
+                <p class="note">For data with no explicit end time, a renderer derives the end time from subsequent data.</p>
+              </td>
               <td></td>
             </tr>
             <tr>
               <th>pauseOnExit</th>
               <td>"false"</td>
-              <td></td>
+              <td>"false"</td>
               <td></td>
             </tr>
             <tr>
               <th>data</th>
               <td>The 'service_block'.</td>
-              <td></td>
+              <td>The payload data of the container received in the MPEG-2 TS.</td>
               <td></td>
             </tr>
           </table>
+
+          <section>
+            <h5>Captions cues originating from ATSC Transport Streams</h5>
+            <p>In ATSC systems, MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object.</p>
+          </section>
+
+          <section>
+            <h5>Captions cues originating from DVB Transport Streams</h5>
+          </section>
+
+          <section>
+            <h5>Captions cues originating from ISDB Transport Streams</h5>
+          </section>
         </section>
 
         <section>
@@ -685,43 +714,49 @@
             </thead>
             <tr>
               <th>id</th>
-              <td>
-                Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-              </td>
+              <td>Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.</td>
               <td></td>
               <td></td>
             </tr>
             <tr>
               <th>startTime</th>
-              <td>
-                The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
-              </td>
+              <td>The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.</td>
               <td></td>
               <td></td>
             </tr>
             <tr>
               <th>endTime</th>
-              <td>
-                The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
-              </td>
+              <td>The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.</td>
               <td></td>
               <td></td>
             </tr>
             <tr>
               <th>pauseOnExit</th>
               <td>"false"</td>
-              <td></td>
+              <td>"false"</td>
               <td></td>
             </tr>
             <tr>
               <th>data</th>
-              <td>
-                The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-              </td>
-              <td></td>
+              <td>The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.</td>
+              <td>The payload data of the container received in the MPEG-2 TS.</td>
               <td></td>
             </tr>
           </table>
+
+          <section>
+            <h5>Subtitles cues originating from ATSC Transport Streams</h5>
+          </section>
+
+          <section>
+            <h5>Subtitles cues originating from DVB Transport Streams</h5>
+          </section>
+
+          <section>
+            <h5>Subtitles cues originating from ISDB Transport Streams</h5>
+          </section>
+        </section>
+
         </section>
       </section>
     </section>
