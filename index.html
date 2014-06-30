@@ -322,7 +322,7 @@
         <p>One source of information about the system type can be the "Transport Stream Description Table" (TSDT) [[MPEG2TS]]. If present in the MPEG-2 TS, it may convey a 'transport_stream_descriptor' [[DVB-SI]] from which the user agent infers the type of broadcast system.</p>
         <p>If no TSDT is contained in the MPEG-2 TS, or it is not conveying a 'transport_stream_descriptor', the user agent employs other heuristics to determine the system type:</p>
         <ul>
-          <li>If the user agent only implements a single broadcast standard, and it can find and and process all expected elements in the MPEG-2 TS, the TS is deemed to be originating from the respective system.</li>
+          <li>If the user agent only implements a single broadcast standard, and it can find and and process all expected elements in the MPEG-2 TS, the TS is deemed to be originating from the respective type of system.</li>
           <li>If location information is available, the user agent can use its geographical location to infer the type of broadcast system in use.
             <p class="note">For information on where ATSC systems are used, see the <a href="#TARGET_NEEDED">ATSC Worldwide page</a>.<br> For information on where DVB systems are used, see the <a href="https://www.dvb.org/news/worldwide">DVB Worldwide page</a>.<br> For information on where ISDB systems are used, see the <a href="http://www.dibeg.org">DiBEG page</a>.</p>
           </li>
