@@ -414,7 +414,19 @@
                 In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
               </p>
             </td>
-            <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
+            <td>A string of the format "OOOO_TTTT_SSSS_CCvPPPP", consisting of the following, upper case hexadecimal encoded fields:
+              <ul>
+                <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
+                <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
+                <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                <li>CCvPPPP is:
+                  <ul>
+                    <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
+                    <li>Otherwise, a four character representation of the elementary stream's identifier (16-bit 'elementary_PID' field) in the PMT.</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
             <td></td>
           </tr>
           <tr>
@@ -500,7 +512,19 @@
           <tr>
             <th>id</th>
             <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
-            <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
+            <td>A string of the format "OOOO_TTTT_SSSS_CCvPPPP", consisting of the following, upper case hexadecimal encoded fields:
+              <ul>
+                <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
+                <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
+                <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                <li>CCvPPPP is:
+                  <ul>
+                    <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
+                    <li>Otherwise, a four character representation of the elementary stream's identifier (16-bit 'elementary_PID' field) in the PMT.</li>
+                  </ul>
+                </li>
+              </ul>
+            </td>
             <td></td>
           </tr>
           <tr>
