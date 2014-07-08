@@ -205,13 +205,13 @@
       <b>MIME type/subtype: application/dash+xml</b>
 
       <ol>
-        <li>Track Order
+        <li><p>Track Order</p>
           <p>
             The order of tracks specified in the MPD (Media Presentation Description) format [[MPEGDASH]] is maintained when sourcing multiple MPEG DASH tracks into HTML.
           </p>
         </li>
 
-        <li>Determining the type of track
+        <li><p>Determining the type of track</p>
           <p>
             A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the adaptationSet mimeType:
           </p>
@@ -222,7 +222,7 @@
           </ul>
         </li>
 
-        <li>Track Attributes for sourced Text Tracks
+        <li><p>Track Attributes for sourced Text Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -260,7 +260,7 @@
           </table>
         </li>
 
-        <li>Track Attributes for sourced Audio and Video Tracks
+        <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -305,7 +305,7 @@
           </table>
         </li>
 
-        <li>Mapping text track content into text track cues
+        <li><p>Mapping text track content into text track cues</p>
           <p>TBD</p>
         </li>
       </ol>
@@ -790,7 +790,6 @@
             <h5>Subtitles cues originating from ISDB Transport Streams</h5>
           </section>
         </section>
-
         </section>
       </section>
     </section>
@@ -800,13 +799,13 @@
       <b>MIME type/subtype: audio/mp4 , video/mp4</b>
 
       <ol>
-        <li>Track Order
+        <li><p>Track Order</p>
           <p>
             The order of tracks specified by TrackBox ('trak') boxes in the MovieBox ('moov') container [[ISOBMFF]] is maintained when sourcing multiple MPEG-4 tracks into HTML.
           </p>
         </li>
 
-        <li>Determining the type of track
+        <li><p>Determining the type of track</p>
           <p>
             A user agent recognises and supports data from a MPEG-4 TrackBox as being equivalent to a HTML track based on the value of the 'handler_type' field in the HandlerBox ('hdlr) of the MediaBox ('mdia') of the TrackBox:
           </p>
@@ -817,7 +816,7 @@
           </ul>
         </li>
 
-        <li>Track Attributes for sourced Text Tracks
+        <li><p>Track Attributes for sourced Text Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -854,7 +853,7 @@
           </table>
         </li>
 
-        <li>Track Attributes for sourced Audio and Video Tracks
+        <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -898,7 +897,7 @@
           </table>
         </li>
 
-        <li>Mapping text track content into text track cues
+        <li><p>Mapping text track content into text track cues</p>
           <p>TBD</p>
         </li>
       </ol>
@@ -910,13 +909,13 @@
       <b>MIME type/subtype: audio/webm , video/webm</b>
 
       <ol>
-        <li>Track Order
+        <li><p>Track Order</p>
           <p>
             The order of tracks specified in the EBML initialisation segment [[WebM]] is maintained when sourcing multiple WebM tracks into HTML.
           </p>
         </li>
 
-        <li>Determining the type of track
+        <li><p>Determining the type of track</p>
           <p>
             A user agent recognises and supports data from a WebM resource as being equivalent to a HTML track based on the value of the 'TrackType' field of the track in the Segment info:
           </p>
@@ -927,7 +926,7 @@
           </ul>
         </li>
 
-        <li>Track Attributes for sourced Text Tracks
+        <li><p>Track Attributes for sourced Text Tracks</p>
           <p>
             WebM has defined how to store WebVTT [[WEBVTT]] files in WebM [[WebM]][[WEBVTT-WEBM]]. Sourcing text tracks from WebM is different for chapter tracks from tracks of other kinds and is explained below the table.
           </p>
@@ -977,7 +976,7 @@
           </p>
         </li>
 
-        <li>Track Attributes for sourced Audio and Video Tracks
+        <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -1021,7 +1020,7 @@
           </table>
         </li>
 
-        <li>Mapping text track content into text track cues
+        <li><p>Mapping text track content into text track cues</p>
           <p>
             The only types of text tracks that WebM is defined for are in the WebVTT format [[WEBVTT-WEBM]]. Therefore, cues on a text track are created as VTTCue objects [[WEBVTT]]. Each 'Block' in the 'BlockGroup' of the WebM track that has the actual data of the text track creates a VTTCue object with its TextTrackCue attributes sourced as follows:
           </p>
@@ -1077,13 +1076,13 @@
       <b>MIME type/subtype: audio/ogg , video/ogg</b>
 
       <ol>
-        <li>Track Order
+        <li><p>Track Order</p>
           <p>
             The order of tracks specified in the Skeleton fisbone headers [[OGGSKELETON]] is maintained when sourcing multiple Ogg tracks into HTML. If no Skeleton track is available, the order of the "beginning of stream" (BOS) pages which determines track order [[OGG]].
           </p>
         </li>
 
-        <li>Determining the type of track
+        <li><p>Determining the type of track</p>
           <p>
             A user agent recognises and supports data from a Ogg resource as being equivalent to a HTML track based on the value of the 'role' field of the fisbone header in Ogg Skeleton:
           </p>
@@ -1097,7 +1096,7 @@
           </p>
         </li>
 
-        <li>Track Attributes for sourced Text Tracks
+        <li><p>Track Attributes for sourced Text Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -1139,7 +1138,7 @@
           </table>
         </li>
 
-        <li>Track Attributes for sourced Audio and Video Tracks
+        <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -1186,7 +1185,7 @@
           </table>
         </li>
 
-        <li>Mapping text track content into text track cues
+        <li><p>Mapping text track content into text track cues</p>
           <p>TBD</p>
         </li>
       </ol>
