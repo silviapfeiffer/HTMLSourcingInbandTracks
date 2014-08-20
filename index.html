@@ -593,19 +593,24 @@
                 <li>"captions": not used</li>
                 <li>"descriptions":
                   <ul>
-                    <li>for audio components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where the 'stream_content' is "0x2" or "0x6" and the 'component_type' in the range between "0x40" and "0x4A"</li>
-                    <li><b>TWO OPTIONS:</b>
+                    <li>for audio components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where 
+                        <ul>
+                            <li>the 'stream_content' is "0x2" and the 'component_type' is "0x40", "0x41", "0x42", "0x47", or "0x48" </li>
+                            <li>the 'stream_content' is "0x6" and the 'component_type' is "0x40", "0x41", "0x42", or in the range "0x44" to "0x4A"</li>
+                        </ul>
+                    </li>
+                    <li>for audio components...
                     <ul>
-                      <li>for audio components with a matching 'supplementary_audio_descriptor' [DVB-SI] in the PMT</li>
-                      <li>for audio components with a 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT with a 'mix_type' of "0"</li>
+                      <li><b>OPTION 1:</b> for audio components with a matching 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li><b>OPTION 2:</b>for audio components with a 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT with a 'mix_type' of "0"</li>
                     </ul>
                   </ul>
                 </li>
                 <li>"main": the audio and video tracks the user agent would select by default</li>
-                <li><b>TWO OPTIONS:</b>
+                <li>"main-desc": ...
                 <ul>
-                  <li>"main-desc": for audio components with a matching 'supplementary_audio_descriptor' [DVB-SI] in the PMT</li>
-                  <li>"main-desc": for audio components with a 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT with a 'mix_type' of "1" and an 'editorial_classification' other than "0x00"</li>
+                  <li><b>OPTION 1:</b> "main-desc": for audio components with a matching 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT</li>
+                  <li><b>OPTION 1:</b> "main-desc": for audio components with a 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT with a 'mix_type' of "1" and an 'editorial_classification' other than "0x00"</li>
                 </ul>
                 <li>"sign": for video components with a 'component_descriptor' in the SDT or EIT, where the 'stream_content' is "0x3" and the 'component_type' is "0x30" or "0x31"</li>
                 <li>"subtitles": not used</li>
@@ -847,7 +852,6 @@
         </section>
         </section>
       </section>
-    </section>
 
     <section id='mpeg4'>
       <h2>MPEG-4 ISOBMFF</h2>
@@ -891,7 +895,7 @@
                     <ul>
                       <li><dfn id="WebVTTcaption">WebVTT caption</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "captions"</li>
                       <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to "http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea708 [[SMPTE2052-11]].</li>
-                      <li><li><dfn id="3GPPcaption">3GPP caption</dfn>:'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g". <p class='note'>Are all sample entries of this type "captions"?</p></li>
+                      <li><dfn id="3GPPcaption">3GPP caption</dfn>:'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g". <p class='note'>Are all sample entries of this type "captions"?</p></li>
                     </ul>
                   </li>
                   <li>"subtitles":
