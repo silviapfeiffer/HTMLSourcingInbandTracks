@@ -242,8 +242,7 @@
             </tr>
             <tr>
               <th>kind</th>
-              <td>
-                <p>Given an Adaptation Set with a role descriptor where the schemeIdUri is "urn:mpeg:dash:role:2011" and an optional accessibility descriptor where, if present, the schemeIdURI is "urn:tva:metadata:cs:AudioPurposeCS:2007":</p>
+              <td>Given an Adaptation Set with a role descriptor where the schemeIdUri is "urn:mpeg:dash:role:2011" and an optional accessibility descriptor where, if present, the schemeIdURI is "urn:tva:metadata:cs:AudioPurposeCS:2007":
                 <ul>
                   <li>"captions": if (role is "main" AND the MPD contains an audio Adaptation Set with role "main" and the same language as the subtitle track AND an accessibility descriptor is present with the schemeIdUri set to "urn:tva:metadata:cs:AudioPurposeCS:2007" and a value 2 [for the hard of hearing]) OR (role is "commentary")</li>
                   <li>"subtitles": if (role is "alternate") OR (role is "main" AND no accessibility scheme is specified)</li>
@@ -309,8 +308,7 @@
             </tr>
             <tr>
               <th>kind</th>
-              <td>
-                <p>Given an Adaptation Set with a role descriptor with schemeIdUri of "urn:mpeg:dash:role:2011", and and an optional accessibility descriptor with schemeIdURI of “urn:tva:metadata:cs:AudioPurposeCS:2007”, determine the 'kind' attribute from the value of the role descriptors in the AdaptationSet element.</p>
+              <td>Given an Adaptation Set with a role descriptor with schemeIdUri of "urn:mpeg:dash:role:2011", and and an optional accessibility descriptor with schemeIdURI of “urn:tva:metadata:cs:AudioPurposeCS:2007”, determine the 'kind' attribute from the value of the role descriptors in the AdaptationSet element.
                 <ul>
                   <li>"alternative": if the role is "alternate"</li>
                   <li>"captions": not used</li>
@@ -388,7 +386,6 @@
 
         <li><p>Mapping event streams into text track cues</p>
            <p>Events in a DASH event stream are created as DataCue objects [[HTML5]]. Each event creates a DataCue object as follows.</p>
-           <p>
               <table>
                 <thead>
                   <th>Attribute</th>
@@ -417,7 +414,7 @@
                 </tr>
                 <tr>
                   <th>data</th>
-                  <td>The string value of the <EventType> element.</td>
+                  <td>The string value of the &lt;EventType&gt; element.</td>
                   <td>message_data</td>
                 </tr>
                 <tr>
@@ -426,7 +423,6 @@
                   <td>message_data as UTF-16 text</td>
                 </tr>
               </table>
-           </p>
         </li>
       </ol>
 
