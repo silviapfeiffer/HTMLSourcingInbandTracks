@@ -132,6 +132,10 @@
               "ISDB": {
                   title:    "Integrated Services Digital Broadcasting",
                   href:     "http://dibeg.org/",
+              },
+              "MPEGDASH": {
+                 title:    "Information technology -- Dynamic adaptive streaming over HTTP (DASH) -- Part 1: Media presentation description and segment formats ISO/IEC 23009-1:2014.Second edition 2014-05-15",
+                 href:     "http://standards.iso.org/ittf/PubliclyAvailableStandards/c065274_ISO_IEC_23009-1_2014.zip"
               }
           }
 
@@ -170,7 +174,7 @@
       </p>
     </section>
 
-    <section>
+    <section id="introduction">
       <h2>Introduction</h2>
       <p>
         The specification maintains mappings from in-band audio, video and other data tracks of MIME-type/subtype media resources to HTML VideoTrack, AudioTrack, and TextTrack objects and their attribute values.
@@ -306,17 +310,17 @@
             <tr>
               <th>kind</th>
               <td>
-                <p>Given a role scheme of "urn:mpeg:dash:role:2011", determine the 'kind' attribute from the value of the role descriptors in the AdaptationSet element.</p>
+                <p>Given an Adaptation Set with a role descriptor with schemeIdUri of "urn:mpeg:dash:role:2011", and and an optional accessibility descriptor with schemeIdURI of “urn:tva:metadata:cs:AudioPurposeCS:2007”, determine the 'kind' attribute from the value of the role descriptors in the AdaptationSet element.</p>
                 <ul>
-                  <li>"alternative": if the role is "alternate" but not also "main" or "commentary", or "dub"</li>
-                  <li>"captions": if the role is "caption" and also "main"</li>
-                  <li>"descriptions": if the role is "description" and also "supplementary"</li>
-                  <li>"main": if the role is "main" but not also "caption", "subtitle", or "dub"</li>
-                  <li>"main-desc": if the role is "main" and also "description"</li>
+                  <li>"alternative": if the role is "alternate"</li>
+                  <li>"captions": not used</li>
+                  <li>"descriptions": not used</li>
+                  <li>"main": if the role is "main"</li>
+                  <li>"main-desc": if the role is "alternate" and an accessibility descriptor is present with value "1"</li>
                   <li>"sign": not used</li>
-                  <li>"subtitles": if the role is "subtitle" and also "main"</li>
-                  <li>"translation": if the role is "dub" and also "main"</li>
-                  <li>"commentary": if the role is "commentary" but not also "main"</li>
+                  <li>"subtitles": not used</li>
+                  <li>"translation": if the role is "dub"</li>
+                  <li>"commentary": if the role is "commentary" and an accessibility descriptor is present with value "1"</li>
                   <li>"": otherwise</li>
                 </ul>
               </td>
@@ -380,6 +384,49 @@
           <p>
             DASH text track data is encapsulated in an MPEG-2 TS container format if the MIME type is "video/mp2t" (MPEG-2 TS container with multiple elementary streams). Text track data in this format should be exposed following the same rules as for <a href='#MPEG2TS-TT'>MPEG-2 TS text track</a>.
           </p>
+        </li>
+
+        <li><p>Mapping event streams into text track cues</p>
+           <p>Events in a DASH event stream are created as DataCue objects [[HTML5]]. Each event creates a DataCue object as follows.</p>
+           <p>
+              <table>
+                <thead>
+                  <th>Attribute</th>
+                  <th>How to source its value for MPD Events</th>
+                  <th>How to source its value for Inband Events</th>
+                </thead>
+                <tr>
+                  <th>id</th>
+                  <td>@id</td>
+                  <td>Id</td>
+                </tr>
+                <tr>
+                  <th>startTime</th>
+                  <td>@presentationTime (scaled according to the EventStream @timescale attribute)  + the time offset of the start of the period from the start of the presentation</td>
+                  <td>presentation_time_delta (scaled according to the timescale value)  + the time offset of the start of the segment from the start of the presentation</td>
+                </tr>
+                <tr>
+                  <th>endTime</th>
+                  <td>The startTime + @duration, subject to the minimum duration requirements below.</td>
+                  <td>The startTime + the event_duration, subject to the minimum duration requirements below.</td>
+                </tr>
+                <tr>
+                  <th>pauseOnExit</th>
+                  <td>"false"</td>
+                  <td>"false"</td>
+                </tr>
+                <tr>
+                  <th>data</th>
+                  <td>The string value of the <EventType> element.</td>
+                  <td>message_data</td>
+                </tr>
+                <tr>
+                  <th>text</th>
+                  <td>above as UTF-16 text</td>
+                  <td>message_data as UTF-16 text</td>
+                </tr>
+              </table>
+           </p>
         </li>
       </ol>
 
