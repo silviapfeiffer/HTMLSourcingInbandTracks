@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Sourcing In-band Media Resource Tracks from Media Containers into HTML</title>
-    <meta charset='utf-8'>
+    <meta charset='utf-8'/>
     <script src='http://www.w3.org/Tools/respec/respec-w3c-common'
             async class='remove'></script>
     <script class='remove'>
@@ -344,7 +344,6 @@
                 </tr>
               </table>
             </p>
-          </p>
           <p>
             DASH text track data is encapsulated in an ISOBMFF container format if the MIME type is "application/mp4" (ISOBMFF container with one track) or "video/mp4" (ISOBMFF container with multiple tracks). Text track data in this format should be exposed following the same rules as for <a href='#ISOBMFF-TT'>ISOBMFF text track</a>.
           </p>
@@ -499,6 +498,7 @@
                   </ul>
                 </li>
                 <li>"metadata": otherwise</li>
+              </ul>
             </td>
             <td></td>
           </tr>
@@ -1049,7 +1049,6 @@
                 </tr>
               </table>
             </p>
-          </p>
           <p>
             TTML data may contain tunneled CEA708 captions [[SMPTE2052-11]]. Browsers that can render CEA708 data should expose it as defined for <a href='#CEA708Cue'>MPEG-2 TS CEA708 cues</a>.
           </p>
