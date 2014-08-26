@@ -4,7 +4,7 @@
     <title>Sourcing In-band Media Resource Tracks from Media Containers into HTML</title>
     <meta charset='utf-8'/>
     <script src='http://www.w3.org/Tools/respec/respec-w3c-common'
-            async class='remove'></script>
+            async="" class='remove'></script>
     <script class='remove'>
       var respecConfig = {
           // specification status (e.g. WD, LCWD, WG-NOTE, etc.). If in doubt use ED.
@@ -312,7 +312,7 @@
           </p>
           <p>
             DASH text track data is in a file in the WebVTT format if the file MIME type is "text/vtt" and should be exposed as a VTTCue as defined in [[WEBVTT]]. DASH text track data is in a file in the TTML format if the file MIME type is "application/ttml+xml" and should be exposed as an as yet to be defined TTMLCue. Alternatively, browsers can also map the TTML features to WebVTTCue objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as DataCue objects [[HTML5]]. In this case, the TTML file must be parsed in its entirety and then converted into a sequence of TTML Intermediate Synchronic Documents (ISDs). Each ISD creates a DataCue object with attributes sourced as follows: 
-            <p>
+          </p>
               <table>
                 <thead>
                   <th>Attribute</th>
@@ -343,7 +343,6 @@
                   <td>The (UTF-16 encoded) character array composing the ISD resource.</td>
                 </tr>
               </table>
-            </p>
           <p>
             DASH text track data is encapsulated in an ISOBMFF container format if the MIME type is "application/mp4" (ISOBMFF container with one track) or "video/mp4" (ISOBMFF container with multiple tracks). Text track data in this format should be exposed following the same rules as for <a href='#ISOBMFF-TT'>ISOBMFF text track</a>.
           </p>
@@ -591,27 +590,35 @@
               <ul>
                 <li>"alternative": not used</li>
                 <li>"captions": not used</li>
-                <li>"descriptions":
+                <li>"descriptions": for audio components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where
+                  <!-- receiver-mix audio components -->
                   <ul>
-                    <li>for audio components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where 
-                        <ul>
-                            <li>the 'stream_content' is "0x2" and the 'component_type' is "0x40", "0x41", "0x42", "0x47", or "0x48" </li>
-                            <li>the 'stream_content' is "0x6" and the 'component_type' is "0x40", "0x41", "0x42", or in the range "0x44" to "0x4A"</li>
-                        </ul>
+                    <li>the 'stream_content' is "0x2" and the 'component_type' is "0x42"</li><!-- receiver-mix supplementary audio as per annex E of TS 101 154 -->
+                    <li>the 'stream_content' is "0x6" and the 'component_type' is "0x42", <!-- HE AAC receiver-mix supplementary audio as per annex E of TS 101 154 -->
+                      or "0x46" <!-- HE AAC v2 receiver-mix supplementary audio as per annex E of TS 101 154 -->
                     </li>
-                    <li>for audio components...
-                    <ul>
-                      <li><b>OPTION 1:</b> for audio components with a matching 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT</li>
-                      <li><b>OPTION 2:</b>for audio components with a 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT with a 'mix_type' of "0"</li>
-                    </ul>
                   </ul>
                 </li>
                 <li>"main": the audio and video tracks the user agent would select by default</li>
-                <li>"main-desc": ...
-                <ul>
-                  <li><b>OPTION 1:</b> "main-desc": for audio components with a matching 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT</li>
-                  <li><b>OPTION 1:</b> "main-desc": for audio components with a 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT with a 'mix_type' of "1" and an 'editorial_classification' other than "0x00"</li>
-                </ul>
+                <li>"main-desc": for audio components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where
+                  <!-- broadcast-mix audio components -->
+                  <ul>
+                    <li>the 'stream_content' is "0x2" and the 'component_type' is "0x40", <!-- MPEG-1 Layer 2 audio description for the visually impaired -->
+                      or "0x41"</li><!-- MPEG-1 Layer 2 audio for the hard of hearing -->
+                    <li>the 'stream_content' is "0x6" and the 'component_type' is "0x40", <!-- HE AAC audio description for the visually impaired -->
+                      "0x41", <!-- HE AAC audio for the hard of hearing -->
+                      "0x44", <!-- HE AAC v2 audio description for the visually impaired -->
+                      or "0x45" <!-- HE AAC v2 audio for the hard of hearing -->
+                    </li>
+                    <li>the combination of 'stream_content' and  'component_type' indicates one of the receiver-mix use cases defined in annex&nbsp;J of [[DVB-SI]], and the User Agent can only present the track in combination with another audio track. In this case, enabling this track results in this track being presented:
+                      <ul>
+                        <li>combined with a "translation" track with a matching ISO_639_language_code, if present</li>
+                        <li>the "main" track otherwise</li>
+                      </ul>
+                    </li>
+                    <li>the combination of 'stream_content' and  'component_type' indicates one of the broadacst-mix use cases defined in annex&nbsp;J of [[DVB-SI]], and the User Agent is able to present the track either in isolation or in combination with another audio track.</li>
+                  </ul>
+                </li>
                 <li>"sign": for video components with a 'component_descriptor' in the SDT or EIT, where the 'stream_content' is "0x3" and the 'component_type' is "0x30" or "0x31"</li>
                 <li>"subtitles": not used</li>
                 <li>"translation": for alternate language audio components</li>
