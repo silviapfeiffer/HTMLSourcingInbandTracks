@@ -548,7 +548,7 @@
                 In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
               </p>
             </td>
-            <td>A string of the format "OOOO.TTTT.SSSS.CC" or "OOOO.TTTT.SSSS.CC&amp;CC", consisting of the following, lower-case hexadecimal encoded fields:
+            <td>A string of the format "OOOO.TTTT.SSSS.CC" consisting of the following, lower-case hexadecimal encoded fields:
               <ul>
                 <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
                 <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
@@ -556,11 +556,10 @@
                 <li>CC is:
                   <ul>
                     <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
-                    <li>Otherwise, a four character representation of the elementary stream's identifier (16-bit 'elementary_PID' field) in the PMT.</li>
+                    <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
                   </ul>
                 </li>
               </ul>
-              <p>Where a track is derived from two components, the second form  ("CC&amp;CC") identifies the independent and dependent streams, where the first 'CC' identifies the independent stream, and the second 'CC' identifies the dependent stream. Otherwise the first form is used.</p>
             </td>
             <td></td>
           </tr>
@@ -656,7 +655,7 @@
                 <li>CC is:
                   <ul>
                     <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
-                    <li>Otherwise, a four character representation of the elementary stream's identifier (16-bit 'elementary_PID' field) in the PMT.</li>
+                    <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
                   </ul>
                 </li>
               </ul>
