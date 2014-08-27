@@ -910,16 +910,20 @@
                   <li>"captions":
                     <ul>
                       <li><dfn id="WebVTTcaption">WebVTT caption</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "captions"</li>
-                      <li><dfn id="TTMLcaption">TTML caption</dfn> and <dfn id="EBUTTDcaption">EBU-TT-D caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&quot;</span> [[TTML1SE]][[EBU-TT-D]].</li>
-                      <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&lt;http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt&gt;&quot;</span> [[SMPTE2052-11]].</li>
+                      <li><dfn id="TTMLcaption">TTML caption</dfn> and <dfn id="EBUTTDcaption">EBU-TT-D caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&quot;</span> [[TTML1SE]][[EBU-TT-D]].
+                          <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
+                      <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&lt;http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt&gt;&quot;</span> [[SMPTE2052-11]].
+                        <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
                       <li><dfn id="3GPPcaption">3GPP caption</dfn>:'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g". <p class='note'>Are all sample entries of this type "captions"?</p></li>
                     </ul>
                   </li>
                   <li>"subtitles":
                     <ul>
                       <li><dfn id="WebVTTsubtitle">WebVTT subtitle</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "subtitles"</li>
-                      <li><dfn id="TTMLsubtitle">TTML subtitle</dfn> and <dfn id="EBUTTDsubtitle">EBU-TT-D subtitle</dfn>: 'handler_type' is "text" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&quot;</span> [[TTML1SE]][[EBU-TT-D]].</li>
-                      <li><dfn id="SMPTE-TT subtitle">SMPTE-TT subtitle</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&lt;http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt&gt;&quot;</span> [[SMPTE2052-11]].</li>
+                      <li><dfn id="TTMLsubtitle">TTML subtitle</dfn> and <dfn id="EBUTTDsubtitle">EBU-TT-D subtitle</dfn>: 'handler_type' is "text" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&quot;</span> [[TTML1SE]][[EBU-TT-D]].
+                        <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
+                      <li><dfn id="SMPTE-TT subtitle">SMPTE-TT subtitle</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&lt;http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt&gt;&quot;</span> [[SMPTE2052-11]].
+                        <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
                     </ul>
                   </li>
                   <li>"metadata": otherwise</li>
