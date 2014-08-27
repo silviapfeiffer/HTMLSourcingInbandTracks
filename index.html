@@ -411,7 +411,6 @@
                  <li>a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
                  <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
                  <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_data_descriptor' [[DVB-SI]] or a 'VBI_teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-                 <li>a DVB data broadcast component [[DVB-DATA]] as identified by a 'data_broadcast_id_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry, or by a 'data_broadcast_descriptor' [[DVB-SI]] in the SDT or EIT</li>
               </ul>
             </td>
             <td>the 'stream_type' is "0x01", "0x02", "0x1B", "0x20", "0x24", or "0xEA"</td>
@@ -616,7 +615,7 @@
                         <li>the "main" track otherwise</li>
                       </ul>
                     </li>
-                    <li>the combination of 'stream_content' and  'component_type' indicates one of the broadacst-mix use cases defined in annex&nbsp;J of [[DVB-SI]], and the User Agent is able to present the track either in isolation or in combination with another audio track.</li>
+                    <li>the combination of 'stream_content' and  'component_type' indicates one of the broadacst-mix use cases defined in annex&nbsp;J of [[DVB-SI]]</li>
                   </ul>
                 </li>
                 <li>"sign": for video components with a 'component_descriptor' in the SDT or EIT, where the 'stream_content' is "0x3" and the 'component_type' is "0x30" or "0x31"</li>
@@ -675,27 +674,19 @@
             <tr>
               <th>id</th>
               <td>Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.</td>
-              <td>The empty string.</td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
               <th>startTime</th>
               <td>0</td>
-              <td>The time, in the media resource timeline, that corresponds to:
-                <ul>
-                  <li>if the media resource is carried in Packetized Elementary Stream (PES) [[MPEG2TS]], and the PES header conveys a Presentation Time Stamp (PTS) [[MPEG2TS]], the presentation time stamp of the PES frame</li>
-                  <li>if no PTS is available for the media resource itself, but a related video resource is available, then the presentation time stamp of the video frame received immediately prior to the data chunk in the media resource</li>
-                  <li> otherwise, 0</li>
-                </ul>
-              </td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
               <th>endTime</th>
               <td>The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.</td>
-              <td>the end time of applicability of the data if provided in the data format or the container, otherwise positive infinity
-                <p class="note">For data with no explicit end time, a renderer derives the end time from subsequent data.</p>
-              </td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
@@ -707,7 +698,7 @@
             <tr>
               <th>data</th>
               <td>The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.</td>
-              <td>The payload data of the container received in the MPEG-2 TS.</td>
+              <td>not used</td>
               <td></td>
             </tr>
           </table>
@@ -731,7 +722,7 @@
             <tr>
               <th>id</th>
               <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
-              <td>The empty string.</td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
@@ -739,12 +730,7 @@
               <td>
                 The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
               </td>
-              <td>The time, in the media resource timeline, that corresponds to:
-                <ul>
-                  <li>if the media resource is carried in Packetized Elementary Stream (PES) [[MPEG2TS]], and the PES header conveys a Presentation Time Stamp (PTS) [[MPEG2TS]], the presentation time stamp of the PES frame</li>
-                  <li>otherwise, the presentation time stamp of the video frame received immediately prior to the data chunk in the media resource</li>
-                </ul>
-              </td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
@@ -755,9 +741,7 @@
                   CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
                 </p>
               </td>
-              <td>the end time of applicability of the data if provided in the data format or the container, otherwise positive infinity
-                <p class="note">For data with no explicit end time, a renderer derives the end time from subsequent data.</p>
-              </td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
@@ -769,7 +753,7 @@
             <tr>
               <th>data</th>
               <td>The 'service_block'.</td>
-              <td>The payload data of the container received in the MPEG-2 TS.</td>
+              <td>not used</td>
               <td></td>
             </tr>
           </table>
@@ -781,7 +765,7 @@
 
           <section>
             <h5>Captions cues originating from DVB Transport Streams</h5>
-            <p>In DVB systems, MPEG-2 captions data is either in the DVB Subtitles format [[DVB-SUB]], or in the EBU Teletext format [[DVB-TXT]][[DVB-VBI]]. Both formats use the Packetized Elementary Stream (PES) transport format [[MPEG2TS]]. Each 'PES_packet' creates a DataCue object.</p>
+            <p>Cues of captions tracks originating from MPEG2-TS are not exposed.</p>
           </section>
 
           <section>
@@ -807,26 +791,19 @@
             <tr>
               <th>id</th>
               <td>Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.</td>
-              <td>The empty string.</td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
               <th>startTime</th>
               <td>The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.</td>
-              <td>The time, in the media resource timeline, that corresponds to:
-                <ul>
-                  <li>if the media resource is carried in Packetized Elementary Stream (PES) [[MPEG2TS]], and the PES header conveys a Presentation Time Stamp (PTS) [[MPEG2TS]], the presentation time stamp of the PES frame</li>
-                  <li>otherwise, the presentation time stamp of the video frame received immediately prior to the data chunk in the media resource</li>
-                </ul>
-              </td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
               <th>endTime</th>
               <td>The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.</td>
-              <td>the end time of applicability of the data if provided in the data format or the container, otherwise positive infinity
-                <p class="note">For data with no explicit end time, a renderer derives the end time from subsequent data.</p>
-              </td>
+              <td>not used</td>
               <td></td>
             </tr>
             <tr>
@@ -838,7 +815,7 @@
             <tr>
               <th>data</th>
               <td>The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.</td>
-              <td>The payload data of the container received in the MPEG-2 TS.</td>
+              <td>not used</td>
               <td></td>
             </tr>
           </table>
@@ -850,7 +827,7 @@
 
           <section>
             <h5>Subtitles cues originating from DVB Transport Streams</h5>
-            <p>In DVB systems, MPEG-2 subtitles data is either in the DVB Subtitles format [[DVB-SUB]], or in the EBU Teletext format [[DVB-TXT]][[DVB-VBI]]. Both formats use the Packetized Elementary Stream (PES) transport format [[MPEG2TS]]. Each 'PES_packet' creates a DataCue object.</p>
+            <p>Cues of subtitles tracks originating from MPEG2-TS are not exposed.</p>
           </section>
 
           <section>
