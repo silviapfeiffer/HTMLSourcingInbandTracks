@@ -277,7 +277,7 @@
             </tr>
             <tr>
               <th>kind</th>
-              <td>"metadata</td>
+              <td>"metadata"</td>
             </tr>
             <tr>
               <th>label</th>
@@ -308,9 +308,9 @@
             </tr>
             <tr>
               <th>kind</th>
-              <td>Given an Adaptation Set with a role descriptor with schemeIdUri of "urn:mpeg:dash:role:2011", and and an optional accessibility descriptor with schemeIdURI of “urn:tva:metadata:cs:AudioPurposeCS:2007”, determine the 'kind' attribute from the value of the role descriptors in the AdaptationSet element.
+              <td>Given an Adaptation Set with a role descriptor with schemeIdUri of "urn:mpeg:dash:role:2011", and and an optional accessibility descriptor with schemeIdURI of “urn:tva:metadata:cs:AudioPurposeCS:2007”, determine the 'kind' attribute from the value of the descriptors in the AdaptationSet element.
                 <ul>
-                  <li>"alternative": if the role is "alternate"</li>
+                  <li>"alternative": if the role is "alternate" and no accessibility descriptor is present with value "1"</li>
                   <li>"captions": not used</li>
                   <li>"descriptions": not used</li>
                   <li>"main": if the role is "main"</li>
