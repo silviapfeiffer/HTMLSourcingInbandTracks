@@ -316,13 +316,30 @@
       <h2>MPEG-2 Transport Streams</h2>
       <b>MIME type/subtype: audio/mp2t , video/mp2t</b>
 
-      <ol>
-        <li><p>Track Order</p>
-          <p>
-            Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS) [[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
-          </p>
-        </li>
+      <section id="mpeg2ts-determining-the-system-type">
+        <h3>Determining the type of broadcast system</h3>
+        <p>MPEG-2 Transport Stream (TS) [[MPEG2TS]] is used as the transport layer in many multimedia broadcast systems worldwide, such as ATSC [[ATSC]], DVB [[DVB]], and ISDB [[ISDB]]. These systems define extensions to MPEG-2 TS to implement advanced features. To successfully map from such broadcast media containers to media resource tracks in HTML, the user agent needs to know from which type of broadcast system the MPEG-2 TS originates, in order to correctly interpret any extensions and make the advanced features available.</p>
+        <p>One source of information about the system type can be the "Transport Stream Description Table" (TSDT) [[MPEG2TS]]. If present in the MPEG-2 TS, it may convey a 'transport_stream_descriptor' [[DVB-SI]] from which the user agent infers the type of broadcast system.</p>
+        <p>If no TSDT is contained in the MPEG-2 TS, or it is not conveying a 'transport_stream_descriptor', the user agent employs other heuristics to determine the system type:</p>
+        <ul>
+          <li>If the user agent only implements a single broadcast standard, and it can find and and process all expected elements in the MPEG-2 TS, the TS is deemed to be originating from the respective type of system.</li>
+          <li>If location information is available, the user agent can use its geographical location to infer the type of broadcast system in use.
+            <p class="note">
+              For information on where ATSC systems are used, see the <a href="#TARGET_NEEDED">ATSC Worldwide page</a>.<br>
+                For information on where DVB systems are used, see the <a href="https://www.dvb.org/news/worldwide">DVB Worldwide page</a>.<br>
+                  For information on where ISDB systems are used, see the <a href="http://www.dibeg.org">DiBEG page</a>.
+            </p>
+          </li>
+        </ul>
+      </section>
+      
+      <section id="mpeg2ts-track-order">
+        <h3>Track order</h3>
+        <p>Tracks are called "elementary streams" in an MPEG-2 TS. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.</p>
+        <p class='note'>In DVB systems the order in which things are listed in tables is explicitly not significant. For Transport Streams originating from DVB systems, user agents and scripts should hence not infer any information from the ordering, or rely on any particular ordering being present.</p>
+      </section>
 
+      <ol>
         <li><p>Determining the type of track</p>
           <p>
             A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
