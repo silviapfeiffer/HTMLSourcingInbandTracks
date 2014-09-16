@@ -177,9 +177,10 @@
             <li>video track: the mimeType is of main type "video"</li>
             <li>audio track: the mimeType is of main type "audio"</li>
           </ul>
+          <p>Additionally event streams as defined in section 5.10 of MPEG DASH are represented as text tracks except for those that are consumed by the DASH client such as the DASH specific events defined in section 5.10.4 of MPEG DASH.</p>
         </li>
 
-        <li><p>Track Attributes for sourced Text Tracks</p>
+        <li><p>Track Attributes for sourced Text Tracks excluding event streams</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -193,11 +194,10 @@
             </tr>
             <tr>
               <th>kind</th>
-              <td>
-                <p>Given URN="urn:mpeg:dash:role:2011":</p>
+              <td>Given an Adaptation Set with a role descriptor where the schemeIdUri is "urn:mpeg:dash:role:2011" and an optional accessibility descriptor where, if present, the schemeIdURI is "urn:tva:metadata:cs:AudioPurposeCS:2007":
                 <ul>
-                  <li>"captions": if the role descriptor's value is "caption"</li>
-                  <li>"subtitles": if the role descriptor's value is "subtitle"</li>
+                  <li>"captions": if (role is "main" AND the MPD contains an audio Adaptation Set with role "main" and the same language as the subtitle track AND an accessibility descriptor is present with the schemeIdUri set to "urn:tva:metadata:cs:AudioPurposeCS:2007" and a value 2 [for the hard of hearing]) OR (role is "commentary")</li>
+                  <li>"subtitles": if (role is "alternate") OR (role is "main" AND no accessibility scheme is specified)</li>
                   <li>"metadata": otherwise</li>
                 </ul>
               </td>
@@ -217,6 +217,35 @@
           </table>
         </li>
 
+        <li><p>Track Attributes for sourced Text Tracks representing event streams</p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>The empty string.</td>
+            </tr>
+            <tr>
+              <th>kind</th>
+              <td>"metadata"</td>
+            </tr>
+            <tr>
+              <th>label</th>
+              <td>The empty string.</td>
+            </tr>
+            <tr>
+              <th>language</th>
+              <td>The empty string.</td>
+            </tr>
+            <tr>
+               <th>inBandMetadataTrackDispatchType</th>
+               <td>@schemeIdUri + “U+0020“ (SPACE character) + @value</td>
+            </tr>
+          </table>
+        </li>
+
         <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
@@ -231,18 +260,17 @@
             </tr>
             <tr>
               <th>kind</th>
-              <td>
-                <p>Given a role scheme of "urn:mpeg:dash:role:2011", determine the 'kind' attribute from the value of the role descriptors in the AdaptationSet element.</p>
+              <td>Given an Adaptation Set with a role descriptor with schemeIdUri of "urn:mpeg:dash:role:2011", and and an optional accessibility descriptor with schemeIdURI of “urn:tva:metadata:cs:AudioPurposeCS:2007”, determine the 'kind' attribute from the value of the descriptors in the AdaptationSet element.
                 <ul>
-                  <li>"alternative": if the role is "alternate" but not also "main" or "commentary", or "dub"</li>
-                  <li>"captions": if the role is "caption" and also "main"</li>
-                  <li>"descriptions": if the role is "description" and also "supplementary"</li>
-                  <li>"main": if the role is "main" but not also "caption", "subtitle", or "dub"</li>
-                  <li>"main-desc": if the role is "main" and also "description"</li>
+                  <li>"alternative": if the role is "alternate" and no accessibility descriptor is present with value "1"</li>
+                  <li>"captions": not used</li>
+                  <li>"descriptions": not used</li>
+                  <li>"main": if the role is "main"</li>
+                  <li>"main-desc": if the role is "alternate" and an accessibility descriptor is present with value "1"</li>
                   <li>"sign": not used</li>
-                  <li>"subtitles": if the role is "subtitle" and also "main"</li>
-                  <li>"translation": if the role is "dub" and also "main"</li>
-                  <li>"commentary": if the role is "commentary" but not also "main"</li>
+                  <li>"subtitles": not used</li>
+                  <li>"translation": if the role is "dub"</li>
+                  <li>"commentary": if the role is "commentary" and an accessibility descriptor is present with value "1"</li>
                   <li>"": otherwise</li>
                 </ul>
               </td>
@@ -268,7 +296,7 @@
           </p>
           <p>
             DASH text track data is in a file in the WebVTT format if the file MIME type is "text/vtt" and should be exposed as a VTTCue as defined in [[WEBVTT]]. DASH text track data is in a file in the TTML format if the file MIME type is "application/ttml+xml" and should be exposed as an as yet to be defined TTMLCue. Alternatively, browsers can also map the TTML features to WebVTTCue objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as DataCue objects [[HTML5]]. In this case, the TTML file must be parsed in its entirety and then converted into a sequence of TTML Intermediate Synchronic Documents (ISDs). Each ISD creates a DataCue object with attributes sourced as follows: 
-            <p>
+          </p>
               <table>
                 <thead>
                   <th>Attribute</th>
@@ -299,14 +327,53 @@
                   <td>The (UTF-16 encoded) character array composing the ISD resource.</td>
                 </tr>
               </table>
-            </p>
-          </p>
           <p>
             DASH text track data is encapsulated in an ISOBMFF container format if the MIME type is "application/mp4" (ISOBMFF container with one track) or "video/mp4" (ISOBMFF container with multiple tracks). Text track data in this format should be exposed following the same rules as for <a href='#ISOBMFF-TT'>ISOBMFF text track</a>.
           </p>
           <p>
             DASH text track data is encapsulated in an MPEG-2 TS container format if the MIME type is "video/mp2t" (MPEG-2 TS container with multiple elementary streams). Text track data in this format should be exposed following the same rules as for <a href='#MPEG2TS-TT'>MPEG-2 TS text track</a>.
           </p>
+        </li>
+
+        <li><p>Mapping event streams into text track cues</p>
+           <p>Events in a DASH event stream are created as DataCue objects [[HTML5]]. Each event creates a DataCue object as follows.</p>
+              <table>
+                <thead>
+                  <th>Attribute</th>
+                  <th>How to source its value for MPD Events</th>
+                  <th>How to source its value for Inband Events</th>
+                </thead>
+                <tr>
+                  <th>id</th>
+                  <td>@id</td>
+                  <td>Id</td>
+                </tr>
+                <tr>
+                  <th>startTime</th>
+                  <td>@presentationTime (scaled according to the EventStream @timescale attribute)  + the time offset of the start of the period from the start of the presentation</td>
+                  <td>presentation_time_delta (scaled according to the timescale value)  + the time offset of the start of the segment from the start of the presentation</td>
+                </tr>
+                <tr>
+                  <th>endTime</th>
+                  <td>The startTime + @duration, subject to the minimum duration requirements below.</td>
+                  <td>The startTime + the event_duration, subject to the minimum duration requirements below.</td>
+                </tr>
+                <tr>
+                  <th>pauseOnExit</th>
+                  <td>"false"</td>
+                  <td>"false"</td>
+                </tr>
+                <tr>
+                  <th>data</th>
+                  <td>The string value of the &lt;EventType&gt; element.</td>
+                  <td>message_data</td>
+                </tr>
+                <tr>
+                  <th>text</th>
+                  <td>above as UTF-16 text</td>
+                  <td>message_data as UTF-16 text</td>
+                </tr>
+              </table>
         </li>
       </ol>
 
