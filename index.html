@@ -596,14 +596,20 @@
                   <li>"captions":
                     <ul>
                       <li><dfn id="WebVTTcaption">WebVTT caption</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "captions"</li>
-                      <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to "http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea708 [[SMPTE2052-11]].</li>
-                      <li><li><dfn id="3GPPcaption">3GPP caption</dfn>:'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g". <p class='note'>Are all sample entries of this type "captions"?</p></li>
+                      <li><dfn id="TTMLcaption">TTML caption</dfn> and <dfn id="EBUTTDcaption">EBU-TT-D caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&quot;</span> [[TTML1SE]][[EBU-TT-D]].
+                          <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
+                      <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&lt;http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt&gt;&quot;</span> [[SMPTE2052-11]].
+                        <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
+                      <li><dfn id="3GPPcaption">3GPP caption</dfn>:'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g". <p class='note'>Are all sample entries of this type "captions"?</p></li>
                     </ul>
                   </li>
                   <li>"subtitles":
                     <ul>
                       <li><dfn id="WebVTTsubtitle">WebVTT subtitle</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "subtitles"</li>
-                      <li><dfn id="SMPTE-TT subtitle">SMPTE-TT subtitle</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to a TTML namespace that does not indicate a <a href="#SMPTETTcaption">SMPTE-TT caption</a>.</li>
+                      <li><dfn id="TTMLsubtitle">TTML subtitle</dfn> and <dfn id="EBUTTDsubtitle">EBU-TT-D subtitle</dfn>: 'handler_type' is "text" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&quot;</span> [[TTML1SE]][[EBU-TT-D]].
+                        <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
+                      <li><dfn id="SMPTE-TT subtitle">SMPTE-TT subtitle</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to <span style="white-space:nowrap">&quot;&lt;http://www.w3.org/ns/ttml&gt;&lt;http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt&gt;&quot;</span> [[SMPTE2052-11]].
+                        <p class="note">The exact contents of the 'namespace' field are still subject to discussion.</p></li>
                     </ul>
                   </li>
                   <li>"metadata": otherwise</li>
@@ -623,6 +629,8 @@
               </td>
             </tr>
           </table>
+          <p class="note">Implementations that strictly support EBU-TT-D need not support all TTML1 features; likewise even fully compliant TTML1SE processors may not support
+EBU-TT-D extensions. When processing TTML1 documents SMPTE-TT processors may generate different output from generic TTML1 processors because SMPTE [[SMPTE2052-1]] defines different initial values for some style attributes.</p>
         </li>
 
         <li><p>Track Attributes for sourced Audio and Video Tracks</p>
@@ -751,7 +759,6 @@
                 </tr>
               </table>
             </p>
-          </p>
           <p>
             TTML data may contain tunneled CEA708 captions [[SMPTE2052-11]]. Browsers that can render CEA708 data should expose it as defined for <a href='#CEA708Cue'>MPEG-2 TS CEA708 cues</a>.
           </p>
