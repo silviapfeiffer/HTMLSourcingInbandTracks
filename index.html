@@ -509,50 +509,71 @@
                 </tr>
               </table>
             </li>
-
-            <li><p>Subtitles cues</p>
-              <p>
-                MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]]. Browsers that can render the SCTE 27 format should expose them in as yet to be specified SCTE27Cue objects. Alternatively, browsers can also map the SCTE 27 features to WebVTTCue object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as DataCue objects [[HTML5]]. In this case, each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TextTrackCue attributes sourced as follows:
-              </p>
+          </ol>
+        </li>
+      </ol>
+      
+            <section>
+              <h4>Subtitles cues</h4>
+              <p>Cues on an MPEG-2 subtitles text track are created as DataCue objects [[HTML5]] with TextTrackCue attributes sourced as follows:</p>
               <table>
                 <thead>
-                  <th>Attribute</th>
-                  <th>How to source its value</th>
+                  <tr>
+                    <th rowspan="2">Attribute</th>
+                    <th colspan="3">How to source its value</th>
+                  </tr>
+                  <tr>
+                    <th>ATSC Transport Stream</th>
+                    <th>DVB Transport Stream</th>
+                    <th>ISDB Transport Stream</th>
+                  </tr>
                 </thead>
                 <tr>
                   <th>id</th>
-                  <td>
-                    Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-                  </td>
+                  <td>Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.</td>
+                  <td>not used</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>startTime</th>
-                  <td>
-                    The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
-                  </td>
+                  <td>The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.</td>
+                  <td>not used</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>endTime</th>
-                  <td>
-                    The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
-                  </td>
+                  <td>The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.</td>
+                  <td>not used</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>pauseOnExit</th>
                   <td>"false"</td>
+                  <td>"false"</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <th>data</th>
-                  <td>
-                    The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-                  </td>
+                  <td>The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.</td>
+                  <td>not used</td>
+                  <td></td>
                 </tr>
               </table>
-            </li>
-          </ol>
-        </li>
-      </ol>
-
+              
+              <section>
+                <h5>Subtitles cues originating from ATSC Transport Streams</h5>
+                <p>In ATSC systems, MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]]. Browsers that can render the SCTE 27 format should expose them in as yet to be specified SCTE27Cue objects. Alternatively, browsers can also map the SCTE 27 features to WebVTTCue object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as DataCue objects [[HTML5]]. In this case, each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object.</p>
+              </section>
+              
+              <section>
+                <h5>Subtitles cues originating from DVB Transport Streams</h5>
+                <p>Cues of subtitles tracks originating from MPEG2-TS are not exposed.</p>
+              </section>
+              
+              <section>
+                <h5>Subtitles cues originating from ISDB Transport Streams</h5>
+              </section>
+            </section>
     </section>
 
     <section id='mpeg4'>
