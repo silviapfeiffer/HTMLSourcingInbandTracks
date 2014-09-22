@@ -3,8 +3,7 @@
   <head>
     <title>Sourcing In-band Media Resource Tracks from Media Containers into HTML</title>
     <meta charset='utf-8'>
-    <script src='http://www.w3.org/Tools/respec/respec-w3c-common'
-            async class='remove'></script>
+    <script src='http://www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
     <script class='remove'>
       var respecConfig = {
           // specification status (e.g. WD, LCWD, WG-NOTE, etc.). If in doubt use ED.
@@ -22,7 +21,7 @@
 
           // if the specification's copyright date is a range of years, specify
           // the start date here:
-          // copyrightStart: "2005"
+          copyrightStart:       "2014",
 
           // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
           // and its maturity status
@@ -73,6 +72,11 @@
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
       };
     </script>
+    <!-- script to register bugs -->
+    <script src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/scripts/bug-assist.js"></script>
+    <meta name="bug.short_desc" content="[InbandTracks] ">
+    <meta name="bug.product" content="HTML WG">
+    <meta name="bug.component" content="Sourcing In-band Media Resource Tracks">
     <style type="text/css">
       table {
         border-collapse: collapse;
@@ -87,6 +91,22 @@
         border-bottom: solid thin;
         vertical-align: top;
         padding: 0.2em;
+      }
+      /* fix bug entry form styling */
+      #bug-assist-form {
+        padding: 4px;
+        border: 1px solid red;
+        background-color: rgba(255, 255, 255, 0.6);
+        position: fixed;
+        top: 1em;
+        right: 1em;
+        width: 115px;
+        opacity: 0.8;
+        text-align: right;
+      }
+      /* move respec button out of the way of the bug button */
+      #respec-ui{
+          top: 100px !important;
       }
     </style>
   </head>
@@ -361,53 +381,121 @@
             </tr>
           </table>
         </li>
+      </ol>
 
-        <li><p>Track Attributes for sourced Audio and Video Tracks</p>
-          <table>
-            <thead>
-              <th>Attribute</th>
-              <th>How to source its value</th>
-            </thead>
+      <section id="mpeg2ts-attributes-for-av-tracks">
+        <h3>Track Attributes for sourced Audio and Video Tracks</h3>
+        <table>
+          <thead>
             <tr>
-              <th>id</th>
-              <td>
-                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
-              </td>
+              <th rowspan="2">Attribute</th>
+              <th colspan="3">How to source its value</th>
             </tr>
             <tr>
-              <th>kind</th>
-              <td>
-                <ul>
-                  <li>"alternative": not used</li>
-                  <li>"captions": not used</li>
-                  <li>"descriptions": AC3 audio in MPEG-2 TS [[ATSC52]]: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
-                  <li>"main": first audio (video) elementary stream in the PMT</li>
-                  <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
-                  <li>"sign": not used</li>
-                  <li>"subtitles": not used</li>
-                  <li>"translation": not first audio elementary stream in the PMT and bsmod=0</li>
-                  <li>"commentary": not used</li>
-                  <li>"": otherwise</li>
-                </ul>
-              </td>
+              <th>ATSC Transport Stream</th>
+              <th>DVB Transport Stream</th>
+              <th>ISDB Transport Stream</th>
             </tr>
-            <tr>
-              <th>label</th>
-              <td>
-                The DOMString representation of the 'component_name_string' field in the 'component_name_descriptor' [[ATSC65]] found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]]. The empty string if the 'component_name_descriptor' is not present.
-              </td>
-            </tr>
-            <tr>
-              <th>language</th>
-              <td>@kind is:
-                <ul>
-                  <li> "descriptions" or "main-desc": Content of the 'language' field in the 'AC-3_audio_stream_descriptor' [[ATSC52]].</li>
-                  <li> otherwise: Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor'.</li>
-                </ul>
-              </td>
-            </tr>
-          </table>
-        </li>
+          </thead>
+          <tr>
+            <th>id</th>
+            <td>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</td>
+            <td>A string of the format "OOOO.TTTT.SSSS.CC" or "OOOO.TTTT.SSSS.CC&amp;CC", consisting of the following, lower-case hexadecimal encoded fields:
+              <ul>
+                <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
+                <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
+                <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                <li>CC is:
+                  <ul>
+                    <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
+                    <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
+                  </ul>
+                </li>
+              </ul>
+              <p>Where a track is derived from two components, the second form  ("CC&amp;CC") identifies the independent and dependent streams, where the first 'CC' identifies the independent stream, and the second 'CC' identifies the dependent stream. Otherwise the first form is used.</p>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>kind</th>
+            <td>
+              <ul>
+                <li>"alternative": not used</li>
+                <li>"captions": not used</li>
+                <li>"descriptions": AC3 audio in MPEG-2 TS [[ATSC52]]: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
+                <li>"main": first audio (video) elementary stream in the PMT</li>
+                <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
+                <li>"sign": not used</li>
+                <li>"subtitles": not used</li>
+                <li>"translation": not first audio elementary stream in the PMT and bsmod=0</li>
+                <li>"commentary": not used</li>
+                <li>"": otherwise</li>
+              </ul>
+            </td>
+            <td>
+              <p><b>Audio</b></p>
+              <p>If a 'supplementary_audio_descriptor' [[DVB-SI]] is present in the PMT for an audio component, the @kind value for audio tracks is derived according to the audio purpose defined in table&nbsp;J.3 of [[DVB-SI]] using the following rules:</p>
+              <ul>
+                <li>components with an audio purpose of "Main audio" map to "main" for the audio track that the user agent would select by default, otherwise to "translation"</li>
+                <li>components with an audio purpose of "Audio description (broadcast-mix)" map to "main-desc"</li>
+                <li>components with an audio purpose of "Audio description (receiver-mix)":
+                  <ul>
+                    <li>The user agent exposes an audio track of @kind "main-desc" for each permitted combination of this track with another audio track as defined in annex J.2 of [[DVB-SI]]. Enabling this track results in the combination being presented.</li>
+                    <li>If the user agent can present the stream in isolation, it also exposes an audio track of @kind "descriptions" for this audio component.</li>
+                  </ul>
+                </li>
+                <li>components with an audio purpose of "Clean audio (broadcast-mix)", "Parametric data dependent stream", or "Unspecific audio for the general audience" map to "alternative"</li>
+                <li>components with other audio purposes map to the empty string</li>
+              </ul>
+              
+              <p>If there is no 'supplementary_audio_descriptor' [[DVB-SI]] in the PMT, the 'audio_type' field in the 'ISO_639_language-descriptor' [[MPEG2TS]] in the PMT determines the type:</p>
+              <ul>
+                <li>if 'audio_type' is "0x00" or "0x01"
+                  <ul>
+                    <li>if the user agent would select it by default then @kind is “main”</li>
+                    <li>otherwise it is “translation”</li>
+                  </ul>
+                </li>
+                <li>for all other values of 'audio_type', @kind is the empty string</li>
+              </ul>
+              
+              <p><b>Video</b></p>
+              <ul>
+                <li>"main": the video track the user agent would select by default</li>
+                <li>"sign": for video components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where the 'stream_content' is "0x3" and the 'component_type' is "0x30" or "0x31"</li>
+                <li>"": otherwise</li>
+              </ul>
+              
+              
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>label</th>
+            <td>The DOMString representation of the 'component_name_string' field in the 'component_name_descriptor' [[ATSC65]] found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]]. The empty string if the 'component_name_descriptor' is not present.</td>
+            <td>
+              <ul>
+                <li>if a 'component_descriptor' [[DVB-SI]] for the component is present in the SDT or EIT, the DOMString representation of the content of the text field in that 'component_descriptor'</li>
+                <li>otherwise the empty string</li>
+              </ul>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>language</th>
+            <td>@kind is:
+              <ul>
+                <li>"descriptions" or "main-desc": Content of the 'language' field in the 'AC-3_audio_stream_descriptor' [[ATSC52]].</li>
+                <li>otherwise: Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor'.</li>
+              </ul>
+            </td>
+            <td>The value of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor' in the PMT</td>
+            <td></td>
+          </tr>
+        </table>
+      </section>
+        
+      <ol>
         <li><p><dfn id='MPEG2TS-TT'>Mapping text track content into text track cues for MPEG-2 TS</dfn></p>
           <p>
             MPEG-2 transport streams may contain data that should be exposed as cues on 'captions', 'subtitles' or 'metadata' text tracks. No data is defined that equates to 'descriptions' or 'chapters' text track cues.
