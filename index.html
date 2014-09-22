@@ -3,8 +3,7 @@
   <head>
     <title>Sourcing In-band Media Resource Tracks from Media Containers into HTML</title>
     <meta charset='utf-8'>
-    <script src='http://www.w3.org/Tools/respec/respec-w3c-common'
-            async class='remove'></script>
+    <script src='http://www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
     <script class='remove'>
       var respecConfig = {
           // specification status (e.g. WD, LCWD, WG-NOTE, etc.). If in doubt use ED.
@@ -22,7 +21,7 @@
 
           // if the specification's copyright date is a range of years, specify
           // the start date here:
-          // copyrightStart: "2005"
+          copyrightStart:       "2014",
 
           // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
           // and its maturity status
@@ -73,6 +72,11 @@
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
       };
     </script>
+    <!-- script to register bugs -->
+    <script src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/scripts/bug-assist.js"></script>
+    <meta name="bug.short_desc" content="[InbandTracks] ">
+    <meta name="bug.product" content="HTML WG">
+    <meta name="bug.component" content="Sourcing In-band Media Resource Tracks">
     <style type="text/css">
       table {
         border-collapse: collapse;
@@ -87,6 +91,22 @@
         border-bottom: solid thin;
         vertical-align: top;
         padding: 0.2em;
+      }
+      /* fix bug entry form styling */
+      #bug-assist-form {
+        padding: 4px;
+        border: 1px solid red;
+        background-color: rgba(255, 255, 255, 0.6);
+        position: fixed;
+        top: 1em;
+        right: 1em;
+        width: 115px;
+        opacity: 0.8;
+        text-align: right;
+      }
+      /* move respec button out of the way of the bug button */
+      #respec-ui{
+          top: 100px !important;
       }
     </style>
   </head>
@@ -317,37 +337,85 @@
             <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
           </ul>
         </li>
+      </ol>
 
-        <li><p>Track Attributes for sourced Text Tracks</p>
+        <section id="mpeg2ts-attributes-for-text-tracks">
+          <h3>Track Attributes for sourced Text Tracks</h3>
           <table>
             <thead>
-              <th>Attribute</th>
-              <th>How to source its value</th>
+              <tr>
+                <th rowspan="2">Attribute</th>
+                <th colspan="3">How to source its value</th>
+              </tr>
+              <tr>
+                <th>ATSC Transport Stream</th>
+                <th>DVB Transport Stream</th>
+                <th>ISDB Transport Stream</th>
+              </tr>
             </thead>
             <tr>
               <th>id</th>
               <td>
                 Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
-               <p>
-                In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
-              </p>
+                <p>
+                  In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
+                </p>
               </td>
+              <td>A string of the format "OOOO.TTTT.SSSS.CC" consisting of the following, lower-case hexadecimal encoded fields:
+                <ul>
+                  <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
+                  <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
+                  <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                  <li>CC is:
+                    <ul>
+                      <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
+                      <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </td>
+              <td></td>
             </tr>
             <tr>
               <th>kind</th>
               <td>
                 <ul>
                   <li>"captions": for a <a href="#captionservice">caption service</a></li>
-                  <li>"subtitles": if the stream type value is "0x82"</li>
+                  <li>"subtitles": if the 'stream_type' value is "0x82"</li>
                   <li>"metadata": otherwise</li>
                 </ul>
               </td>
+              <td>
+                <ul>
+                  <li>"captions":
+                    <ul>
+                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x20" to "0x25"</li>
+                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT</li>
+                      <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT</li>
+                    </ul>
+                  </li>
+                  <li>"subtitles":
+                    <ul>
+                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x10" to "0x15"</li>
+                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT</li>
+                      <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT</li>
+                    </ul>
+                  </li>
+                  <li>"metadata": otherwise</li>
+                </ul>
+              </td>
+              <td></td>
             </tr>
             <tr>
               <th>label</th>
+              <td>The DOMString representation of the 'component_name_string' field in the 'component_name_descriptor' [[ATSC65]] found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]]. The empty string if the 'component_name_descriptor' is not present.</td>
               <td>
-                The DOMString representation of the 'component_name_string' field in the 'component_name_descriptor' [[ATSC65]] found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]]. The empty string if the 'component_name_descriptor' is not present.
+                <ul>
+                  <li>if a 'component_descriptor' [[DVB-SI]] for the component is present in the SDT or EIT, the DOMString representation of the content of the text field in that 'component_descriptor'</li>
+                  <li>otherwise the empty string</li>
+                </ul>
               </td>
+              <td></td>
             </tr>
             <tr>
               <th>language</th>
@@ -358,10 +426,24 @@
                   <li>"metadata": The empty string.</li>
                 </ul>
               </td>
+              <td>@kind is
+                <ul>
+                  <li>"captions" or "subtitles":
+                    <ul>
+                      <li>for a DVB subtitle component [[DVB-SUB]], the value of the 'ISO_639_language_code' field in the 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li>for an ITU-R System B Teletext component [[DVB-TXT]], the value of the 'ISO_639_language_code' field in the 'teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li>for a VBI data component [[DVB-VBI]], the value of the 'ISO_639_language_code' field in the 'VBI_teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                    </ul>
+                  </li>
+                  <li>"metadata": The empty string.</li>
+                </ul>
+              </td>
+              <td></td>
             </tr>
           </table>
-        </li>
-
+        </section>
+        
+      <ol>
         <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
